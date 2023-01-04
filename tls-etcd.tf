@@ -53,9 +53,12 @@ resource "tls_cert_request" "client" {
     organization = "etcd"
   }
 
-  ip_addresses = [
-    "127.0.0.1",
-  ]
+  ip_addresses = concat(
+    var.etcd_server_ips,
+    [
+      "127.0.0.1",
+    ]
+  )
 
   dns_names = concat(var.etcd_servers, ["localhost"])
 }
@@ -91,9 +94,12 @@ resource "tls_cert_request" "server" {
     organization = "etcd"
   }
 
-  ip_addresses = [
-    "127.0.0.1",
-  ]
+  ip_addresses = concat(
+    var.etcd_server_ips,
+    [
+      "127.0.0.1",
+    ]
+  )
 
   dns_names = concat(var.etcd_servers, ["localhost"])
 }
@@ -128,6 +134,8 @@ resource "tls_cert_request" "peer" {
     common_name  = "etcd-peer"
     organization = "etcd"
   }
+
+  ip_addresses = var.etcd_server_ips
 
   dns_names = var.etcd_servers
 }

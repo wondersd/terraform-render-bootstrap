@@ -8,9 +8,33 @@ variable "api_servers" {
   description = "List of URLs used to reach kube-apiserver"
 }
 
+variable "api_server_ips" {
+  type        = list(string)
+  description = "List of IPs used to reach kube-apiserver"
+  default     = []
+}
+
+variable "api_server_use_ips" {
+  type        = bool
+  default     = false
+  description = "Use ip addresses instead of domains to reach kube-apiserver"
+}
+
 variable "etcd_servers" {
   type        = list(string)
   description = "List of URLs used to reach etcd servers."
+}
+
+variable "etcd_server_ips" {
+  type        = list(string)
+  description = "List of IPs used to reach etcd servers."
+  default     = []
+}
+
+variable "etcd_use_ips" {
+  type        = bool
+  default     = false
+  description = "Use ip addresses instead of domains to reach etcd"
 }
 
 # optional

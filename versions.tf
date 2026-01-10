@@ -5,5 +5,8 @@ terraform {
   required_providers {
     random = "~> 3.1"
     tls    = "~> 4.0"
+    deepmerge = {
+      source = "isometry/deepmerge"
+    }
   }
 }

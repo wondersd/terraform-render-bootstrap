@@ -41,14 +41,16 @@ spec:
     - --service-cluster-ip-range=${service_cidr}
     - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
     - --tls-private-key-file=/etc/kubernetes/pki/apiserver.key
+    %{ for command in additional_commands ~}
+    - ${command}
+    %{ endfor }
     env:
     - name: POD_IP
       valueFrom:
         fieldRef:
           fieldPath: status.podIP
     resources:
-      requests:
-        cpu: 150m
+      ${indent(6, yamlencode(resources))}
     volumeMounts:
     - name: secrets
       mountPath: /etc/kubernetes/pki

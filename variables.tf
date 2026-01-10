@@ -167,3 +167,23 @@ variable "components" {
   # sets it to null.
   nullable = false
 }
+
+variable "additional_commands" {
+  type    = map(string)
+  default = null
+}
+
+variable "resources" {
+  type    = map(string)
+  default = null
+}
+
+variable "static_manifests" {
+  type    = any
+  default = null
+}
+
+variable "manifests" {
+  type    = any
+  default = null
+}

@@ -35,6 +35,9 @@ spec:
     - --service-account-private-key-file=/etc/kubernetes/pki/service-account.key
     - --service-cluster-ip-range=${service_cidr}
     - --use-service-account-credentials=true
+    %{ for command in additional_commands ~}
+    - ${command}
+    %{ endfor }
     livenessProbe:
       httpGet:
         scheme: HTTPS
@@ -45,8 +48,7 @@ spec:
       timeoutSeconds: 15
       failureThreshold: 8
     resources:
-      requests:
-        cpu: 150m
+      ${indent(6, yamlencode(resources))}
     volumeMounts:
     - name: secrets
       mountPath: /etc/kubernetes/pki

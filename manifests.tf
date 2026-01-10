@@ -1,4 +1,23 @@
 locals {
+
+  default_resources = {
+    "static-manifests/kube-apiserver.yaml" = {
+      requests = {
+        cpu = "150m"
+      }
+    }
+    "static-manifests/kube-controller-manager.yaml" = {
+      requests = {
+        cpu = "150m"
+      }
+    }
+    "static-manifests/kube-scheduler.yaml" = {
+      requests = {
+        cpu = "100m"
+      }
+    }
+  }
+
   # Kubernetes static pod manifests map
   # {static-manifests/manifest.yaml => content }
   static_manifests = {
@@ -14,6 +33,15 @@ locals {
         pod_cidr          = var.pod_cidr
         service_cidr      = var.service_cidr
         aggregation_flags = var.enable_aggregation ? indent(4, local.aggregation_flags) : ""
+        additional_commands = (var.additional_commands == null
+          ? []
+          : lookup(var.additional_commands, "static-manifests/${name}", [])
+        )
+        resources = provider::deepmerge::mergo(
+          local.default_resources["static-manifests/${name}"],
+          try(var.resources["static-manifests/${name}"], null)
+        )
+        # resources = {}
       }
     )
   }
@@ -59,6 +87,26 @@ locals {
       ) if var.components.enable && var.components.kube_proxy.enable && var.networking != "cilium"
     }
   )
+
+  static_manifests_overrides = {
+    for key, value in local.static_manifests :
+    key => yamlencode(
+      provider::deepmerge::mergo(
+        yamldecode(value),
+        try(lookup(var.static_manifests, key, null), null)
+      )
+    )
+  }
+
+  manifests_overrides = {
+    for key, value in local.manifests :
+    key => yamlencode(
+      provider::deepmerge::mergo(
+        yamldecode(value),
+        try(lookup(var.manifests, key, null), null)
+      )
+    )
+  }
 }
 
 locals {

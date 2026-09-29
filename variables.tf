@@ -8,6 +8,11 @@ variable "api_servers" {
   description = "List of URLs used to reach kube-apiserver"
 }
 
+variable "apiserver_additional_args" {
+  type    = list(string)
+  default = []
+}
+
 variable "etcd_servers" {
   type        = list(string)
   description = "List of URLs used to reach etcd servers."

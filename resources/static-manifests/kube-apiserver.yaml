@@ -43,6 +43,9 @@ spec:
     - --service-cluster-ip-range=${service_cidr}
     - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
     - --tls-private-key-file=/etc/kubernetes/pki/apiserver.key
+    %{~ for arg in kube_apiserver_additional_args ~}
+    - ${arg}
+    %{~ endfor ~}
     env:
     - name: POD_IP
       valueFrom:

@@ -16,6 +16,16 @@ locals {
           },
           var.apiserver_resources
         )
+        kube_apiserver_securitycontext = merge(
+          {
+            runAsNonRoot = true
+            runAsUser    = 65534
+            seccompProfile = {
+              type = "RuntimeDefault"
+            }
+          },
+          var.apiserver_securitycontext
+        )
         kube_controller_manager_image = var.container_images["kube_controller_manager"]
         kube_scheduler_image          = var.container_images["kube_scheduler"]
 

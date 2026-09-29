@@ -18,6 +18,11 @@ variable "apiserver_resources" {
   default = {}
 }
 
+variable "apiserver_securitycontext" {
+  type    = any
+  default = {}
+}
+
 variable "etcd_servers" {
   type        = list(string)
   description = "List of URLs used to reach etcd servers."

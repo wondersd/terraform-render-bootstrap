@@ -102,7 +102,7 @@ data:
   routing-mode: "tunnel"
   tunnel: vxlan
   # Enables L7 proxy for L7 policy enforcement and visibility
-  enable-l7-proxy: "true"
+  enable-l7-proxy: "${enable_l7_proxy}"
 
   auto-direct-node-routes: "false"
 

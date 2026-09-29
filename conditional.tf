@@ -28,6 +28,10 @@ locals {
         cilium_operator_image = var.container_images["cilium_operator"]
         pod_cidr              = var.pod_cidr
         daemonset_tolerations = var.daemonset_tolerations
+        enable_l7_proxy = (try(var.components.cilium.enable-l7-proxy, null) == null
+          ? true
+          : var.components.cilium.enable-l7-proxy
+        )
       }
     )
     if var.components.enable && var.components.cilium.enable && var.networking == "cilium"

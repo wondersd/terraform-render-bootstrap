@@ -114,7 +114,8 @@ variable "components" {
     )
     cilium = optional(
       object({
-        enable = optional(bool, true)
+        enable          = optional(bool, true)
+        enable-l7-proxy = optional(bool)
       }),
       {
         enable = true

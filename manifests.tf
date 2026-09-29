@@ -8,8 +8,16 @@ locals {
       {
         kube_apiserver_image           = var.container_images["kube_apiserver"]
         kube_apiserver_additional_args = var.apiserver_additional_args
-        kube_controller_manager_image  = var.container_images["kube_controller_manager"]
-        kube_scheduler_image           = var.container_images["kube_scheduler"]
+        kube_apiserver_resources = merge(
+          {
+            requests = {
+              cpu = "150m"
+            }
+          },
+          var.apiserver_resources
+        )
+        kube_controller_manager_image = var.container_images["kube_controller_manager"]
+        kube_scheduler_image          = var.container_images["kube_scheduler"]
 
         etcd_servers = join(",", formatlist("https://%s:2379", var.etcd_servers))
         pod_cidr     = var.pod_cidr

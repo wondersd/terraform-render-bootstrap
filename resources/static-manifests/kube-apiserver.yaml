@@ -52,8 +52,7 @@ spec:
         fieldRef:
           fieldPath: status.podIP
     resources:
-      requests:
-        cpu: 150m
+      ${indent(6, yamlencode(kube_apiserver_resources))}
     volumeMounts:
     - name: secrets
       mountPath: /etc/kubernetes/pki

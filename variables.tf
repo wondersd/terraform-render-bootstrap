@@ -13,6 +13,11 @@ variable "apiserver_additional_args" {
   default = []
 }
 
+variable "apiserver_resources" {
+  type    = any
+  default = {}
+}
+
 variable "etcd_servers" {
   type        = list(string)
   description = "List of URLs used to reach etcd servers."

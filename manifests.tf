@@ -35,7 +35,15 @@ locals {
           var.controller_manager_resources
         )
         kube_controller_manager_image = var.container_images["kube_controller_manager"]
-        kube_scheduler_image          = var.container_images["kube_scheduler"]
+        kube_scheduler_resources = merge(
+          {
+            requests = {
+              cpu = "100m"
+            }
+          },
+          var.scheduler_resources
+        )
+        kube_scheduler_image = var.container_images["kube_scheduler"]
 
         etcd_servers = join(",", formatlist("https://%s:2379", var.etcd_servers))
         pod_cidr     = var.pod_cidr

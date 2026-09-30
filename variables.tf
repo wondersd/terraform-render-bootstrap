@@ -28,6 +28,11 @@ variable "controller_manager_resources" {
   default = {}
 }
 
+variable "scheduler_resources" {
+  type    = any
+  default = {}
+}
+
 variable "etcd_servers" {
   type        = list(string)
   description = "List of URLs used to reach etcd servers."

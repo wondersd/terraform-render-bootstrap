@@ -26,6 +26,14 @@ locals {
           },
           var.apiserver_securitycontext
         )
+        kube_controller_manager_resources = merge(
+          {
+            requests = {
+              cpu = "150m"
+            }
+          },
+          var.controller_manager_resources
+        )
         kube_controller_manager_image = var.container_images["kube_controller_manager"]
         kube_scheduler_image          = var.container_images["kube_scheduler"]
 

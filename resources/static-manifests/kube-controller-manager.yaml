@@ -45,8 +45,7 @@ spec:
       timeoutSeconds: 15
       failureThreshold: 8
     resources:
-      requests:
-        cpu: 150m
+      ${indent(6, yamlencode(kube_controller_manager_resources))}
     volumeMounts:
     - name: secrets
       mountPath: /etc/kubernetes/pki

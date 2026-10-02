@@ -6,6 +6,8 @@ metadata:
   labels:
     k8s-app: kube-scheduler
     tier: control-plane
+  annotations:
+    ${indent(4, yamlencode(kube_scheduler_annotations))}
 spec:
   hostNetwork: true
   priorityClassName: system-cluster-critical

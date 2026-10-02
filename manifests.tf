@@ -7,6 +7,7 @@ locals {
       "${path.module}/resources/static-manifests/${name}",
       {
         kube_apiserver_image           = var.container_images["kube_apiserver"]
+        kube_apiserver_annotations     = var.apiserver_annotations
         kube_apiserver_additional_args = var.apiserver_additional_args
         kube_apiserver_resources = merge(
           {
@@ -26,6 +27,7 @@ locals {
           },
           var.apiserver_securitycontext
         )
+        kube_controller_manager_annotations = var.controller_manager_annotations
         kube_controller_manager_resources = merge(
           {
             requests = {
@@ -35,6 +37,7 @@ locals {
           var.controller_manager_resources
         )
         kube_controller_manager_image = var.container_images["kube_controller_manager"]
+        kube_scheduler_annotations    = var.scheduler_annotations
         kube_scheduler_resources = merge(
           {
             requests = {

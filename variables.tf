@@ -96,6 +96,12 @@ variable "container_images" {
   }
 }
 
+variable "container_image_overrides" {
+  type        = map(string)
+  description = "overrides fro container images. regular variable sets defaults and has to be overridden wholesale. this allows for specific version overrides"
+  default     = null
+}
+
 variable "enable_aggregation" {
   type        = bool
   description = "Enable the Kubernetes Aggregation Layer (defaults to true)"

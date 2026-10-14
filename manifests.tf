@@ -1,4 +1,10 @@
 locals {
+
+  container_images = merge(
+    var.container_images,
+    var.container_image_overrides
+  )
+
   # Kubernetes static pod manifests map
   # {static-manifests/manifest.yaml => content }
   static_manifests = {
@@ -6,7 +12,7 @@ locals {
     "static-manifests/${name}" => templatefile(
       "${path.module}/resources/static-manifests/${name}",
       {
-        kube_apiserver_image           = var.container_images["kube_apiserver"]
+        kube_apiserver_image           = local.container_images["kube_apiserver"]
         kube_apiserver_annotations     = var.apiserver_annotations
         kube_apiserver_additional_args = var.apiserver_additional_args
         kube_apiserver_resources = merge(
@@ -36,7 +42,7 @@ locals {
           },
           var.controller_manager_resources
         )
-        kube_controller_manager_image = var.container_images["kube_controller_manager"]
+        kube_controller_manager_image = local.container_images["kube_controller_manager"]
         kube_scheduler_annotations    = var.scheduler_annotations
         kube_scheduler_resources = merge(
           {
@@ -46,7 +52,7 @@ locals {
           },
           var.scheduler_resources
         )
-        kube_scheduler_image = var.container_images["kube_scheduler"]
+        kube_scheduler_image = local.container_images["kube_scheduler"]
 
         etcd_servers = join(",", formatlist("https://%s:2379", var.etcd_servers))
         pod_cidr     = var.pod_cidr
@@ -79,7 +85,7 @@ locals {
       "manifests/coredns/${name}" => templatefile(
         "${path.module}/resources/coredns/${name}",
         {
-          coredns_image          = var.container_images["coredns"]
+          coredns_image          = local.container_images["coredns"]
           control_plane_replicas = max(2, length(var.etcd_servers))
           cluster_domain_suffix  = var.cluster_domain_suffix
           cluster_dns_service_ip = cidrhost(var.service_cidr, 10)
@@ -92,7 +98,7 @@ locals {
       "manifests/kube-proxy/${name}" => templatefile(
         "${path.module}/resources/kube-proxy/${name}",
         {
-          kube_proxy_image      = var.container_images["kube_proxy"]
+          kube_proxy_image      = local.container_images["kube_proxy"]
           pod_cidr              = var.pod_cidr
           daemonset_tolerations = var.daemonset_tolerations
         }

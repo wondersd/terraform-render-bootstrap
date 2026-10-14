@@ -8,8 +8,8 @@ locals {
     "manifests/network/${name}" => templatefile(
       "${path.module}/resources/flannel/${name}",
       {
-        flannel_image         = var.container_images["flannel"]
-        flannel_cni_image     = var.container_images["flannel_cni"]
+        flannel_image         = local.container_images["flannel"]
+        flannel_cni_image     = local.container_images["flannel_cni"]
         pod_cidr              = var.pod_cidr
         daemonset_tolerations = var.daemonset_tolerations
       }
@@ -24,8 +24,8 @@ locals {
     "manifests/network/${name}" => templatefile(
       "${path.module}/resources/cilium/${name}",
       {
-        cilium_agent_image    = var.container_images["cilium_agent"]
-        cilium_operator_image = var.container_images["cilium_operator"]
+        cilium_agent_image    = local.container_images["cilium_agent"]
+        cilium_operator_image = local.container_images["cilium_operator"]
         pod_cidr              = var.pod_cidr
         daemonset_tolerations = var.daemonset_tolerations
         enable_l7_proxy = (try(var.components.cilium.enable-l7-proxy, null) == null
